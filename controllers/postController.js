@@ -1,3 +1,4 @@
+const e = require('connect-flash')
 const Post = require('../models/Post')
 
 exports.viewCreateScreen = function (req, res) {
@@ -24,11 +25,11 @@ exports.viewSingle = async function (req, res) {
   }
 }
 
-exports.viewEditScreen = async function (req, res) {
+exports.viewEditScreen = async function(req, res) {
   try {
     let post = await Post.findSingleById(req.params.id, req.visitorId)
     if (post.isVisitorOwner) {
-      res.render("edit-post", { post: post })
+      res.render("edit-post", {post: post})
     } else {
       req.flash("errors", "You do not have permission to perform that action.")
       req.session.save(() => res.redirect("/"))
@@ -66,3 +67,19 @@ exports.edit = function (req, res) {
     })
   })
 }
+
+
+exports.delete = function(req, res){
+  Post.delete(req.params.id, req.visitorId).then(() => {
+    req.flash("success", "Post deleted successfully.")
+    req.session.save(() => res.redirect(`/profile/${req.session.user.username}`))
+
+  }).catch(e,function(){
+    console.log(e)
+    req.flash("errors","You do not have permission to performm that action")
+    req.session.save(() => res.redirect('/'))
+  })
+
+}
+
+
