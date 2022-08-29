@@ -96,16 +96,16 @@ Post.reusablePostQuery = function (uniqueOperations, visitorId) {
 
     // clean up author property in each post object
     posts = posts.map(function (post) {
-      post.isVisitorOwner = post.authorId.equals(visitorId)
-
-      post.author = {
+       post.isVisitorOwner = post.authorId.equals(visitorId)
+       //post.authorId = undefined
+       //console.log(post.author.username)
+       post.author = {
         username: post.author.username,
         avatar: new User(post.author, true).avatar
       }
 
       return post
     })
-
     resolve(posts)
   })
 }
@@ -142,18 +142,29 @@ Post.delete = function (postIdToDelete, currentUserId) {
 
       let post = await Post.findSingleById(postIdToDelete, currentUserId)
       if (post.isVisitorOwner) {
-        await postsCollection.deleteOne({ _id: new ObjectId(postIdToDelete)})
+        await postsCollection.deleteOne({ _id: new ObjectId(postIdToDelete) })
         resolve()
       } else {
         reject()
-
       }
-    } catch (e) {
-      console.log(e)
+    } catch (err) {
+      console.log(err)
       reject()
     }
   })
 }
 
+Post.search = function(searchTerm) {
+  return new Promise(async (resolve, reject) => {
+    if (typeof(searchTerm) == "string") {
+       // it is yet to be completed.
+       // Backend aspect of search.
+
+      resolve()
+    } else { 
+      reject()
+    }
+  })
+}
 
 module.exports = Post

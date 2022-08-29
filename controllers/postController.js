@@ -1,4 +1,5 @@
-const e = require('connect-flash')
+//const e = require('connect-flash')
+//const { Resolver } = require('webpack')
 const Post = require('../models/Post')
 
 exports.viewCreateScreen = function (req, res) {
@@ -74,12 +75,20 @@ exports.delete = function(req, res){
     req.flash("success", "Post deleted successfully.")
     req.session.save(() => res.redirect(`/profile/${req.session.user.username}`))
 
-  }).catch(e,function(){
-    console.log(e)
+  }).catch(function(){
+    console.log()
     req.flash("errors","You do not have permission to performm that action")
     req.session.save(() => res.redirect('/'))
   })
 
+}
+
+exports.search = function(req, res) {
+  Post.search(req.body.searchTerm).then(posts => {
+    res.json(posts)
+  }).catch(() => {
+    res.json([])
+  })
 }
 
 
