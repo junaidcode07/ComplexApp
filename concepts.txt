@@ -1,0 +1,18 @@
+Server side validation...... + browser side validation
+
+
+
+Functions and variables are stored in memory for an execution context 
+before we execute our code. This is called hoisting.
+
+
+Temporal Dead Zone: The zone before the actual declaration of the variable is 
+                    called the temporal Dead Zone.
+ReferenceError get thrown when trying to reference uninitialized variables before
+their declaration.
+
+Scope Chain of global execution and the Scope Chain of local execution context.
+Difference between global, local and block scope.
+
+=>>Variables declared with the let or const keyword are scoped to the nearest 
+   curly brackets ({}).

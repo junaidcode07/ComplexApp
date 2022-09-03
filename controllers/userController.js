@@ -3,6 +3,21 @@ const Post = require('../models/Post')
 const Follow = require('../models/Follow')
 
 
+exports.doesUsernameExist = function(req, res) {
+  User.findByUsername(req.body.username).then(function() {
+    res.json(true)
+  }).catch(function() {
+    res.json(false)
+  })
+
+}
+
+exports.doesEmailExist = async function(req, res) {
+  let emailBool = await User.doesEmailExist(req.body.email)
+  res.json(emailBool)
+}
+
+
 exports.sharedProfileData = async function (req, res, next) {
   let isVisitorsProfile = false
   let isFollowing = false
@@ -100,6 +115,7 @@ exports.profilePostsScreen = function (req, res) {
   // ask our post model for posts by a certain author id
   Post.findByAuthorId(req.profileUser._id).then(function (posts) {
     res.render('profile', {
+      title: `Profile for ${req.profileUser.username}`,
       currentPage : "posts",
       posts: posts,
       profileUsername: req.profileUser.username,
